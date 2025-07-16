@@ -13,5 +13,9 @@ public class DataModelMappingProfile : Profile
         CreateMap<LocationDataModel, Location>().ConvertUsing<LocationDataModelConverter>();
 
         CreateMap<Meeting, MeetingDataModel>();
+        CreateMap<MeetingDataModel, Meeting>().ConvertUsing<MeetingDataModelConverter>();
+
+        CreateMap<Collaborator, CollaboratorDataModel>();
+        CreateMap<CollaboratorDataModel, Collaborator>().ConvertUsing<CollaboratorDataModelConverter>();
     }
 }

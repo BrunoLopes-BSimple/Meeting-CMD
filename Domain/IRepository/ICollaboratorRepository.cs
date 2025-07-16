@@ -6,5 +6,5 @@ namespace Domain.IRepository;
 
 public interface ICollaboratorRepository : IGenericRepositoryEF<ICollaborator, Collaborator, ICollaboratorVisitor>
 {
-
+    public Task<bool> AlreadyExistsAsync(Guid collbId);
 }

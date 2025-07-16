@@ -13,15 +13,11 @@ public class LocationService : ILocationService
 {
     private readonly ILocationRepository _locationRepo;
     private readonly ILocationFactory _locationFactory;
-    private readonly IMapper _mapper;
-    private readonly IMessagePublisher _publisher;
 
-    public LocationService(ILocationRepository repository, ILocationFactory factory, IMapper mapper, IMessagePublisher publisher)
+    public LocationService(ILocationRepository repository, ILocationFactory factory)
     {
         _locationRepo = repository;
         _locationFactory = factory;
-        _mapper = mapper;
-        _publisher = publisher;
     }
 
     public async Task<ILocation?> AddLocationReferenceAsync(LocationReference reference)

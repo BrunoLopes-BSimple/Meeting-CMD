@@ -35,4 +35,9 @@ public class MeetingRepository : GenericRepositoryEF<IMeeting, Meeting, MeetingD
         var meeting = _mapper.Map<Meeting>(meetingDM);
         return meeting;
     }
+
+    public async Task<bool> AlreadyExistsAsync(Guid meetingId)
+    {
+        return await _context.Set<MeetingDataModel>().AnyAsync(m => m.Id == meetingId);
+    }
 }

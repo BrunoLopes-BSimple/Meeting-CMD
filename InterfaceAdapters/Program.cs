@@ -13,6 +13,7 @@ using Infrastructure.Repositories;
 using Infrastructure.Resolvers;
 using InterfaceAdapters;
 using InterfaceAdapters.Consumers;
+using InterfaceAdapters.Publisher;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +26,7 @@ builder.Services.AddDbContext<LocationContext>(opt => opt.UseNpgsql(builder.Conf
 // Services
 builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddScoped<IMeetingService, MeetingService>();
+builder.Services.AddScoped<ICollaboratorService, CollaboratorService>();
 
 // Repositories
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
@@ -41,8 +43,12 @@ builder.Services.AddScoped<IMeetingFactory, MeetingFactory>();
 
 // Mappers
 builder.Services.AddTransient<LocationDataModelConverter>();
+builder.Services.AddTransient<MeetingDataModelConverter>();
+builder.Services.AddTransient<CollaboratorDataModelConverter>();
 
 // publisher
+builder.Services.AddTransient<IMessagePublisher, MassTransitPublisher>();
+
 
 
 builder.Services.AddAutoMapper(cfg =>
@@ -58,6 +64,7 @@ builder.Services.AddAutoMapper(cfg =>
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<LocationCreatedConsumer>();
+    x.AddConsumer<CollaboratorCreatedConsumer>();
 
     x.UsingRabbitMq((context, cfg) =>
     {
@@ -67,6 +74,12 @@ builder.Services.AddMassTransit(x =>
         cfg.ReceiveEndpoint($"meeting-cmd-{instance}", e =>
         {
             e.ConfigureConsumers(context);
+        });
+
+        cfg.ReceiveEndpoint($"collaborators-cmd-{instance}", e =>
+        {
+            e.ConfigureConsumer<CollaboratorCreatedConsumer>(context);
+
         });
     });
 

@@ -1,6 +1,5 @@
 using AutoMapper;
 using Domain.Entities;
-using Domain.Factories.LocationFactory;
 using Infrastructure.DataModels;
 
 namespace Infrastructure.Resolvers;

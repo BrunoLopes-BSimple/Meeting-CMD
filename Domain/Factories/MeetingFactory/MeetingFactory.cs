@@ -20,4 +20,9 @@ public class MeetingFactory : IMeetingFactory
 
         throw new ArgumentException("Mode defined does not exist.");
     }
+
+    public IMeeting Create(Guid id, PeriodDateTime period, string mode, Guid locationId)
+    {
+        return new Meeting(id, period, mode, locationId);
+    }
 }

@@ -23,12 +23,7 @@ public class LocationServiceAddLocationReferenceAsync
         var repoDouble = new Mock<ILocationRepository>();
         repoDouble.Setup(r => r.AlreadyExists(reference.Id)).ReturnsAsync(true);
 
-        var publisherDouble = new Mock<IMessagePublisher>();
-        var mapperDouble = new Mock<IMapper>();
-
-
-        var service = new LocationService(repoDouble.Object, factoryDouble.Object, mapperDouble.Object, publisherDouble.Object);
-
+        var service = new LocationService(repoDouble.Object, factoryDouble.Object);
 
         // act
         var result = await service.AddLocationReferenceAsync(reference);
@@ -55,11 +50,7 @@ public class LocationServiceAddLocationReferenceAsync
         var factoryDouble = new Mock<ILocationFactory>();
         factoryDouble.Setup(f => f.Create(id)).Returns(locationDouble.Object);
 
-        var publisherDouble = new Mock<IMessagePublisher>();
-        var mapperDouble = new Mock<IMapper>();
-
-
-        var service = new LocationService(repoDouble.Object, factoryDouble.Object, mapperDouble.Object, publisherDouble.Object);
+        var service = new LocationService(repoDouble.Object, factoryDouble.Object);
 
 
         // act

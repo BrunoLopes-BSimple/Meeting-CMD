@@ -4,4 +4,5 @@ namespace Application.IPublisher;
 
 public interface IMessagePublisher
 {
+    public Task PublishMeetingCreated(IMeeting meeting);
 }
