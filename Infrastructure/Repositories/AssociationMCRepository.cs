@@ -23,4 +23,11 @@ public class AssociationMCRepository : GenericRepositoryEF<IAssociationMeetingCo
         var associations = _mapper.Map<IEnumerable<AssociationMeetingCollab>>(associationsDM);
         return associations;
     }
+
+    public async Task RemoveCollaboratorsFromMeeting(Guid meetingId)
+    {
+        var associations = await _context.Set<AssociationMCDataModel>().Where(a => a.MeetingId == meetingId).ToListAsync();
+
+        _context.Set<AssociationMCDataModel>().RemoveRange(associations);
+    }
 }

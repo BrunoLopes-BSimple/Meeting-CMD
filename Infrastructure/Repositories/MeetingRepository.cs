@@ -40,4 +40,17 @@ public class MeetingRepository : GenericRepositoryEF<IMeeting, Meeting, MeetingD
     {
         return await _context.Set<MeetingDataModel>().AnyAsync(m => m.Id == meetingId);
     }
+
+    public async Task<IMeeting?> UpdateMeeting(IMeeting meeting)
+    {
+        var meetingDM = await _context.Set<MeetingDataModel>().FirstOrDefaultAsync(m => m.Id == meeting.Id);
+        if (meetingDM == null) return null;
+
+        meetingDM.Period = meeting.Period;
+        meetingDM.Mode = meeting.Mode;
+        meetingDM.LocationId = meeting.LocationId;
+
+        _context.Set<MeetingDataModel>().Update(meetingDM);
+        return _mapper.Map<Meeting>(meetingDM);
+    }
 }

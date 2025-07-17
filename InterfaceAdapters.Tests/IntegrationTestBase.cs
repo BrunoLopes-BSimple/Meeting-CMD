@@ -26,4 +26,10 @@ public class IntegrationTestBase
         var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
         return await Client.PostAsync(url, content);
     }
+
+    protected async Task<HttpResponseMessage> PutAsync(string url, object payload)
+    {
+        var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
+        return await Client.PutAsync(url, content);
+    }
 }

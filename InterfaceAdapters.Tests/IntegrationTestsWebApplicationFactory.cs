@@ -1,4 +1,6 @@
+using Application.IPublisher;
 using Infrastructure;
+using InterfaceAdapters.Tests.ControllerTests;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +41,9 @@ public class IntegrationTestsWebApplicationFactory<TProgram> : WebApplicationFac
             using var scope = sp.CreateScope();
             var db = scope.ServiceProvider.GetRequiredService<LocationContext>();
             db.Database.EnsureCreated();
+
+            services.RemoveAll<IMessagePublisher>();
+            services.AddSingleton<IMessagePublisher, FakeMessagePublisher>();
         });
     }
 

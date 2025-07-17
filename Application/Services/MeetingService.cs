@@ -1,8 +1,6 @@
-using System.IO.Pipelines;
 using Application.DTO;
 using Application.IPublisher;
 using Application.IService;
-using Domain.Entities;
 using Domain.Factories.AssociationFactory;
 using Domain.Factories.MeetingFactory;
 using Domain.Interfaces;
@@ -37,7 +35,7 @@ public class MeetingService : IMeetingService
         if (meetingAlreadyExists) return null;
 
         var newMeeting = _meetingFactory.Create(reference.Id, reference.Period, reference.Mode, reference.LocationId);
-        return await _meetingRepository.AddAsync(newMeeting);  
+        return await _meetingRepository.AddAsync(newMeeting);
     }
 
     public async Task<Result<CreatedMeetingDTO>> Create(CreateMeetingDTO dto)
@@ -66,5 +64,39 @@ public class MeetingService : IMeetingService
         {
             return Result<CreatedMeetingDTO>.Failure(Error.BadRequest(e.Message));
         }
+    }
+
+    public async Task<Result<EditedMeetingDTO>> EditMeeting(EditMeetingDTO dto)
+    {
+        var meeting = await _meetingRepository.GetByIdAsync(dto.MeetingId);
+        if (meeting == null) return Result<EditedMeetingDTO>.Failure(Error.NotFound("Meeting Not Found."));
+
+        var validModes = new[] { "Online", "Hybrid", "OnSite" };
+        if (!validModes.Contains(dto.Mode)) return Result<EditedMeetingDTO>.Failure(Error.InternalServerError("Mode does not exist"));
+
+        meeting.UpdatePeriod(dto.Period);
+        meeting.UpdateMode(dto.Mode);
+        meeting.UpdateLocationId(dto.LocationId);
+
+        await _meetingRepository.UpdateMeeting(meeting);
+
+        await _associationRepository.RemoveCollaboratorsFromMeeting(dto.MeetingId);
+
+        var associationsToCreate = new List<IAssociationMeetingCollab>();
+        foreach (var collabId in dto.CollaboratorIds)
+        {
+            var newAssociation = await _associationFactory.Create(meeting, collabId);
+            associationsToCreate.Add(newAssociation);
+        }
+
+        _associationRepository.AddRange(associationsToCreate);
+
+        await _context.SaveChangesAsync();
+
+        var collabIds = associationsToCreate.Select(a => a.CollabId).ToList();
+
+        var result = new EditedMeetingDTO(meeting.Id, meeting.Period, meeting.Mode, meeting.LocationId, collabIds);
+
+        return Result<EditedMeetingDTO>.Success(result);
     }
 }

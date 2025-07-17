@@ -8,4 +8,5 @@ public interface IMeetingService
 {
     public Task<Result<CreatedMeetingDTO>> Create(CreateMeetingDTO dto);
     Task<IMeeting?> AddMeetingReferenceAsync(MeetingReference reference);
+    public Task<Result<EditedMeetingDTO>> EditMeeting(EditMeetingDTO dto);
 }

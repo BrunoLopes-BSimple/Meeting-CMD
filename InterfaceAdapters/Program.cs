@@ -45,6 +45,8 @@ builder.Services.AddScoped<IMeetingFactory, MeetingFactory>();
 builder.Services.AddTransient<LocationDataModelConverter>();
 builder.Services.AddTransient<MeetingDataModelConverter>();
 builder.Services.AddTransient<CollaboratorDataModelConverter>();
+builder.Services.AddTransient<AssociationMCDataModelConverter>();
+
 
 // publisher
 builder.Services.AddTransient<IMessagePublisher, MassTransitPublisher>();

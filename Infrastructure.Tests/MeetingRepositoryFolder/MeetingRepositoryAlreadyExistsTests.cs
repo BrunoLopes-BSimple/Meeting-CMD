@@ -1,7 +1,6 @@
 using Domain.Entities;
 using Infrastructure.DataModels;
 using Infrastructure.Repositories;
-using Moq;
 
 namespace Infrastructure.Tests.MeetingRepositoryFolder;
 

@@ -20,4 +20,18 @@ public class Meeting : IMeeting
         LocationId = locationId;
     }
 
+    public void UpdatePeriod(PeriodDateTime period)
+    {
+        this.Period = period;
+    }
+
+    public void UpdateMode(string mode)
+    {
+        this.Mode = mode;
+    }
+
+    public void UpdateLocationId(Guid locationId)
+    {
+        this.LocationId = locationId;
+    }
 }

@@ -17,5 +17,9 @@ public class DataModelMappingProfile : Profile
 
         CreateMap<Collaborator, CollaboratorDataModel>();
         CreateMap<CollaboratorDataModel, Collaborator>().ConvertUsing<CollaboratorDataModelConverter>();
+
+        CreateMap<AssociationMeetingCollab, AssociationMCDataModel>();
+        CreateMap<AssociationMCDataModel, AssociationMeetingCollab>().ConvertUsing<AssociationMCDataModelConverter>();
+
     }
 }
