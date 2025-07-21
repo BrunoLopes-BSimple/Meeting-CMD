@@ -9,4 +9,9 @@ public class FakeMessagePublisher : IMessagePublisher
     {
         return Task.CompletedTask;
     }
+
+    public Task PublishMeetingCreated(IMeeting meeting, IEnumerable<Guid> collabIds)
+    {
+        throw new NotImplementedException();
+    }
 }

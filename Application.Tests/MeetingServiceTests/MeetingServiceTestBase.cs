@@ -1,4 +1,5 @@
 using Application.IPublisher;
+using Application.ISender;
 using Application.Services;
 using Domain.Factories.AssociationFactory;
 using Domain.Factories.MeetingFactory;
@@ -17,6 +18,7 @@ public abstract class MeetingServiceTestBase
     protected readonly Mock<IAssociationMCRepository> _associationRepositoryDouble;
     protected readonly LocationContext _context;
     protected readonly Mock<IMessagePublisher> _publisher;
+    protected readonly Mock<IMessageSender> _sender;
 
     protected readonly MeetingService MeetingService;
 
@@ -31,12 +33,14 @@ public abstract class MeetingServiceTestBase
         _meetingRepositoryDouble = new Mock<IMeetingRepository>();
         _associationRepositoryDouble = new Mock<IAssociationMCRepository>();
         _publisher = new Mock<IMessagePublisher>();
+        _sender = new Mock<IMessageSender>();
 
         MeetingService = new MeetingService(_meetingFactoryDouble.Object,
             _associationFactoryDouble.Object,
             _meetingRepositoryDouble.Object,
             _associationRepositoryDouble.Object,
             _context,
-            _publisher.Object);
+            _publisher.Object,
+            _sender.Object);
     }
 }

@@ -21,5 +21,8 @@ public class DataModelMappingProfile : Profile
         CreateMap<AssociationMeetingCollab, AssociationMCDataModel>();
         CreateMap<AssociationMCDataModel, AssociationMeetingCollab>().ConvertUsing<AssociationMCDataModelConverter>();
 
+        CreateMap<MeetingWithoutLocation, MeetingWithouLocationDataModel>();
+        CreateMap<MeetingWithouLocationDataModel, MeetingWithoutLocation>().ConvertUsing<MeetingWithoutLocationDataModelConverter>();
+
     }
 }

@@ -14,9 +14,9 @@ public class MassTransitPublisher : IMessagePublisher
         _publishEndpoint = publishEndpoint;
     }
 
-    public async Task PublishMeetingCreated(IMeeting meeting)
+    public async Task PublishMeetingCreated(IMeeting meeting, IEnumerable<Guid> collabIds)
     {
-        var eventMessage = new MeetingCreatedMessage(meeting.Id, meeting.Period, meeting.Mode, meeting.LocationId);
+        var eventMessage = new MeetingCreatedMessage(meeting.Id, meeting.Period, meeting.Mode, meeting.LocationId, collabIds);
         await _publishEndpoint.Publish(eventMessage);
     }
 }

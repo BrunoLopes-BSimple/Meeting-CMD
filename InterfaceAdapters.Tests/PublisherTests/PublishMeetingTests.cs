@@ -14,7 +14,6 @@ public class PublishMeetingTests
     {
         // Arrange 
         var publishEndpointDouble = new Mock<IPublishEndpoint>();
-
         var publisher = new MassTransitPublisher(publishEndpointDouble.Object);
 
         var meetingDouble = new Mock<IMeeting>();
@@ -28,8 +27,10 @@ public class PublishMeetingTests
         meetingDouble.Setup(c => c.Mode).Returns(mode);
         meetingDouble.Setup(c => c.LocationId).Returns(locationId);
 
+        var collabIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
+
         // Act 
-        await publisher.PublishMeetingCreated(meetingDouble.Object);
+        await publisher.PublishMeetingCreated(meetingDouble.Object, collabIds);
 
         // Assert
         publishEndpointDouble.Verify(
@@ -38,12 +39,14 @@ public class PublishMeetingTests
                     e.Id == meetingId &&
                     e.Period == period &&
                     e.Mode == mode &&
-                    e.LocationId == locationId
+                    e.LocationId == locationId &&
+                    e.CollabIds.SequenceEqual(collabIds)
                 ),
                 It.IsAny<CancellationToken>()
             ),
             Times.Once
         );
     }
+
 
 }

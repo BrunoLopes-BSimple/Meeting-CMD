@@ -28,5 +28,13 @@ namespace InterfaceAdapters.Controllers
             var editedMeeting = await _meetingService.EditMeeting(dto);
             return editedMeeting.ToActionResult();
         }
+
+        [HttpPost("withoutLocation")]
+        public async Task<ActionResult<CreatedMeetingWithoutLocationDTO>> CreateWithoutLocation(CreateMeetingWithoutLocationDTO dto)
+        {
+            var result = await _meetingService.CreateMeetingWithoutLocation(dto);
+            if (result) return Accepted();
+            return BadRequest();
+        }
     }
 }

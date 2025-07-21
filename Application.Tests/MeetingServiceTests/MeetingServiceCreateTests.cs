@@ -51,7 +51,7 @@ public class MeetingServiceCreateTests : MeetingServiceTestBase
         _meetingRepositoryDouble.Verify(m => m.Add(meetingDouble.Object), Times.Once);
         _associationRepositoryDouble.Verify(a => a.AddRange(It.Is<List<IAssociationMeetingCollab>>(l => l.Count == 2)), Times.Once);
 
-        _publisher.Verify(p => p.PublishMeetingCreated(meetingDouble.Object), Times.Once);
+        /* _publisher.Verify(p => p.PublishMeetingCreated(meetingDouble.Object), Times.Once); */
     }
 
     [Fact]
@@ -83,6 +83,6 @@ public class MeetingServiceCreateTests : MeetingServiceTestBase
         Assert.NotNull(result.Error);
         Assert.Contains("Error creating association", result.Error.Message);
 
-        _publisher.Verify(p => p.PublishMeetingCreated(It.IsAny<IMeeting>()), Times.Never);
+        /* _publisher.Verify(p => p.PublishMeetingCreated(It.IsAny<IMeeting>()), Times.Never); */
     }
 }

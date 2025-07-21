@@ -17,7 +17,10 @@ public class MeetingCreatedConsumerTests
         var serviceDouble = new Mock<IMeetingService>();
         var consumer = new MeetingCreatedConsumer(serviceDouble.Object);
 
-        var message = new MeetingCreatedMessage(Guid.NewGuid(), new PeriodDateTime(DateTime.Now, DateTime.Now.AddDays(1)), It.IsAny<string>(), Guid.NewGuid());
+        var collabIds = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
+
+
+        var message = new MeetingCreatedMessage(Guid.NewGuid(), new PeriodDateTime(DateTime.Now, DateTime.Now.AddDays(1)), It.IsAny<string>(), Guid.NewGuid(), collabIds);
 
         var context = Mock.Of<ConsumeContext<MeetingCreatedMessage>>(m => m.Message == message);
         var reference = new MeetingReference(message.Id, message.Period, message.Mode, message.LocationId);
@@ -26,6 +29,6 @@ public class MeetingCreatedConsumerTests
         await consumer.Consume(context);
 
         // assert
-        serviceDouble.Verify(s => s.AddMeetingReferenceAsync(reference), Times.Once);
+        serviceDouble.Verify(s => s.AddMeetingReferenceAsync(reference, collabIds), Times.Once);
     }
 }

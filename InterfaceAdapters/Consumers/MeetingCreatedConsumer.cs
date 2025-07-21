@@ -18,6 +18,6 @@ public class MeetingCreatedConsumer : IConsumer<MeetingCreatedMessage>
     {
         var reference = new MeetingReference(context.Message.Id, context.Message.Period, context.Message.Mode, context.Message.LocationId);
 
-        await _meetingService.AddMeetingReferenceAsync(reference);
+        await _meetingService.AddMeetingReferenceAsync(reference, context.Message.CollabIds);
     }
 }
